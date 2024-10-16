@@ -20,9 +20,9 @@ var colorVelocity = "#ff00ff";                             // Farbe für Geschwi
 var colorAcceleration = "#0000ff";                         // Farbe für Beschleunigung
 var colorForce = "#008020";                                // Farbe für Kraft
 var colorAngle = "#00ffff";                                // Farbe für Winkelmarkierung
-colorClock1 = "#000000";                                   // Farbe für Gehäuse der Digitaluhr
-colorClock2 = "#ffffff";                                   // Farbe für Anzeige der Digitaluhr
-colorClock3 = "#00ff00";                                   // Farbe für Ziffern der Digitaluhr
+colorClock1 = "#add8e6";                                   // Farbe für Gehäuse der Digitaluhr
+colorClock2 = "#add8e6";                                   // Farbe für Anzeige der Digitaluhr
+colorClock3 = "#ffffff";                                   // Farbe für Ziffern der Digitaluhr
 
 // Sonstige Konstanten:
 
