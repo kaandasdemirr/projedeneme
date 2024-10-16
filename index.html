@@ -1,60 +1,121 @@
 <!DOCTYPE HTML>
-
 <html lang="en">
 
 <head>
-<title>Projectile Motion Simulation ME 403 GROUP 4 2024 Fall </title>
-<meta charset="utf-8">
-<link rel="stylesheet" href="../ph/app.css">
-<style>
-div#total { width: 720px; height: 420px; }
-div#canvas { width: 440px; height: 420px; }
-div#panel { left: 440px; width: 280px; height: 420px; } 
-.pos1 { left: 10px; }
-.pos3 { left: 240px; }
-input[type="text"] { left: 170px; width: 60px; }
-button { width: 260px; }
-</style>
-<script src="page_phen.js"></script>
-<script src="projectile.js"></script>
-<script src="projectile_en.js"></script>
-<meta name="description" content="The objective of this project is to evaluate and analyze the trajectory, velocity, and impact behavior of objects in projectile motion. By simulating and measuring various parameters such as launch angle, initial speed, and environmental factors, we aim to provide a comprehensive understanding of the dynamics involved in projectile motion.
-The collected data will be used to refine models for predicting projectile paths and enhance applications in fields such as ballistics, sports science, and engineering. This project also serves as a practical tool for validating theoretical principles of motion, aiding both educational and research settings. The effect of air resistance is neglected.">
-<meta name="author" content="Designed by Kaan Daşdemir, 
-a student of Mechanical Engineering at Yeditepe University">
-<meta name="keywords" content="app, physics, mechanics, projectile motion">
+    <title>Projectile Motion Simulation ME 403 GROUP 4 2024 Fall </title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../ph/app.css">
+    <style>
+        div#total {
+            width: 720px;
+            height: 420px;
+        }
+
+        .container {
+            display: flex; /* Yatay yerleşim için flexbox kullanıyoruz */
+        }
+
+        div#canvas {
+            width: 440px;
+            height: 420px;
+        }
+
+        div#panel {
+            width: 280px; /* Bilgi panelinin genişliği */
+            height: 420px; /* Bilgi panelinin yüksekliği */
+            padding-left: 20px; /* Grafikten boşluk bırak */
+        }
+
+        .pos1 {
+            left: 10px;
+        }
+
+        .pos3 {
+            left: 240px;
+        }
+
+        input[type="text"] {
+            left: 170px;
+            width: 60px;
+        }
+
+        button {
+            width: 260px;
+        }
+    </style>
+    <script src="page_phen.js"></script>
+    <script src="projectile.js"></script>
+    <script src="projectile_en.js"></script>
+    <meta name="description" content="The objective of this project is to evaluate and analyze the trajectory, velocity, and impact behavior of objects in projectile motion. By simulating and measuring various parameters such as launch angle, initial speed, and environmental factors, we aim to provide a comprehensive understanding of the dynamics involved in projectile motion. The collected data will be used to refine models for predicting projectile paths and enhance applications in fields such as ballistics, sports science, and engineering. This project also serves as a practical tool for validating theoretical principles of motion, aiding both educational and research settings. The effect of air resistance is neglected.">
+    <meta name="author" content="Designed by Kaan Daşdemir, a student of Mechanical Engineering at Yeditepe University">
+    <meta name="keywords" content="app, physics, mechanics, projectile motion">
 </head>
 
 <body>
 
-<h1>Projectile Motion Simulation ME 403 SEC4G4 2024 Fall </h1>
+    <h1>Projectile Motion Simulation ME 403 SEC4G4 2024 Fall </h1>
 
+    <p>The purpose of this project is to evaluate and analyze the trajectory, velocity, and impact behavior of objects in projectile motion. By simulating various parameters—including launch angle, initial speed, and environmental factors—we aim to provide a comprehensive understanding of the dynamics involved in projectile motion. The data collected will be used to refine predictive models for projectile paths, enhancing applications in fields such as ballistics, sports science, and engineering.</p>
+    <p>This project serves as a practical tool for validating theoretical principles of motion, making it valuable for both educational and research settings. Users can reset the projectile to its initial position using the "Reset" button. The simulation can be started, stopped, and continued with a separate control button. For a more detailed observation, selecting the "Slow Motion" option allows the movement to proceed at one-tenth of the normal speed.</p>
+    <p>Users have the flexibility to vary several parameters, including initial height, initial speed, angle of inclination, mass, and gravitational acceleration, within certain limits. Radio buttons enable the selection of one of five physical dimensions for experimentation. Note that the effect of air resistance is neglected in this simulation to simplify the analysis.</p>
 
-<p>The purpose of this project is to evaluate and analyze the trajectory, velocity, and impact behavior of objects in projectile motion. By simulating various parameters—including launch angle, initial speed, and environmental factors—we aim to provide a comprehensive understanding of the dynamics involved in projectile motion. The data collected will be used to refine predictive models for projectile paths, enhancing applications in fields such as ballistics, sports science, and engineering.</p>
-<p>This project serves as a practical tool for validating theoretical principles of motion, making it valuable for both educational and research settings. Users can reset the projectile to its initial position using the "Reset" button. The simulation can be started, stopped, and continued with a separate control button. For a more detailed observation, selecting the "Slow Motion" option allows the movement to proceed at one-tenth of the normal speed.</p>
-<p>Users have the flexibility to vary several parameters, including initial height, initial speed, angle of inclination, mass, and gravitational acceleration, within certain limits. Radio buttons enable the selection of one of five physical dimensions for experimentation. Note that the effect of air resistance is neglected in this simulation to simplify the analysis.</p>
+    <div id="total">
+        <div class="container">
+            <div id="canvas">
+                <canvas id="cv" width=440 height=420>This browser doesn't support HTML5 canvas!</canvas>
+            </div>
+            <div id="panel">
+                <div style="top: 10px;"><button id="bu1" style="background-color: #ff0000;"></button></div>
+                <div style="top: 50px;"><button id="bu2" style="background-color: #00ff00;"></button></div>
+                <div style="top: 95px;">
+                    <input type="checkbox" id="cbSlow" name="cbSlow" value="">
+                    <label for="cbSlow" id="lbSlow">Slow motion</label>
+                </div>
+                <div style="top: 125px;">
+                    <label>Initial height:</label>
+                    <input type="text" id="ipHb" value="5.000"> m
+                </div>
+                <div style="top: 155px;">
+                    <label>Initial speed:</label>
+                    <input type="text" id="ipVb" value="5.000"> m/s
+                </div>
+                <div style="top: 185px;">
+                    <label>Angle:</label>
+                    <input type="text" id="ipWb" value="45.000"> ° 
+                </div>
+                <div style="top: 215px;">
+                    <label>Mass:</label>
+                    <input type="text" id="ipMb" value="1.000"> kg
+                </div>
+                <div style="top: 245px;">
+                    <label>Gravitational acceleration:</label>
+                    <input type="text" id="ipGb" value="9.810"> m/s²
+                </div>
+                <div style="top: 270px; color: #0000FF;">
+                    <label>Position</label>
+                </div>
+                <div style="top: 295px; color: #0000FF;">
+                    <label>Velocity</label>
+                </div>
+                <div style="top: 320px; color: #0000FF;">
+                    <label>Acceleration</label>
+                </div>
+                <div style="top: 345px; color: #0000FF;">
+                    <label>Force</label>
+                </div>
+                <div style="top: 370px; color: #0000FF;">
+                    <label>Energy</label>
+                </div>
+                <div style="top: 400px;">
+                    <p>Designed by Kaan Daşdemir, Mechanical Engineering Student at Yeditepe University</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div id="total">
-  <div id="canvas"><canvas id="cv" width=440 height=420>This browser doesn't support HTML5 canvas!</canvas></div>
-  <div id="panel">
-    <div style="top: 10px;"><button id="bu1" style="background-color: #ff0000;"></button></div>
-    <div style="top: 50px;"><button id="bu2" style="background-color: #00ff00;"></button></div>
-    <div style="top: 95px;"><input type="checkbox" id="cbSlow" name="cbSlow" value=""><label for="cbSlow" id="lbSlow"></label></div>
-    <div style="top: 125px;"><span class="pos1" id="ipHa"></span><input type="text" id="ipHb"><span class="pos3" id="ipHc"></span></div>
-    <div style="top: 155px;"><span class="pos1" id="ipVa"></span><input type="text" id="ipVb"><span class="pos3" id="ipVc"></span></div>
-    <div style="top: 185px;"><span class="pos1" id="ipWa"></span><input type="text" id="ipWb"><span class="pos3" id="ipWc"></span></div>
-    <div style="top: 215px;"><span class="pos1" id="ipMa"></span><input type="text" id="ipMb"><span class="pos3" id="ipMc"></span></div>
-    <div style="top: 245px;"><span class="pos1" id="ipGa"></span><input type="text" id="ipGb"><span class="pos3" id="ipGc"></span></div>
-    <div style="top: 270px; color: #0000FF;"><input type="radio" id="rbY" name="bg" value=""><label for="rbY" id="lbY"></label></div>
-    <div style="top: 295px; color: #0000FF;"><input type="radio" id="rbV" name="bg" value=""><label for="rbV" id="lbV"></label></div>
-    <div style="top: 320px; color: #0000FF;"><input type="radio" id="rbA" name="bg" value=""><label for="rbA" id="lbA"></label></div>
-    <div style="top: 345px; color: #0000FF;"><input type="radio" id="rbF" name="bg" value=""><label for="rbF" id="lbF"></label></div>
-    <div style="top: 370px; color: #0000FF;"><input type="radio" id="rbE" name="bg" value=""><label for="rbE" id="lbE"></label></div>
-    <div style="top: 400px;"><span class="pos1" id="author"></span></div>
-  </div>
-</div>
-
-<script>endPage("projectile",21,10,2024,30,12,2024);</script>
+    <script>endPage("projectile",21,10,2024,30,12,2024);</script>
 
 </body>
+
 </html>
+
