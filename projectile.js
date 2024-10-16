@@ -14,8 +14,8 @@
 // Farben:
 
 var colorBackground = "#ffff00";                           // Hintergrundfarbe
-var colorGround = "##0000ff";                              // Farbe für Untergrund
-var colorPosition = "#ff0000";                             // Farbe für Position
+var colorGround = "#0000ff";                               // Farbe für Untergrund
+var colorPosition = "#0000FF";                             // Farbe für Position
 var colorVelocity = "#ff00ff";                             // Farbe für Geschwindigkeit
 var colorAcceleration = "#0000ff";                         // Farbe für Beschleunigung
 var colorForce = "#008020";                                // Farbe für Kraft
