@@ -1,5 +1,5 @@
 // Schiefer Wurf, englische Texte
-// Letzte Änderung 07.12.2017
+// Letzte Ã„nderung 07.12.2017
 
 // Texte in HTML-Schreibweise:
 
@@ -17,20 +17,20 @@ var text11 = "Acceleration";
 var text12 = "Force";
 var text13 = "Energy";
 
-var author = "W. Fendt 2000";
+var author = "Designed by Kaan DaÅŸdemir, Mechanical Engineering Student at Yeditepe University";
 
 // Symbole und Einheiten:  
 
 var decimalSeparator = ".";                                // Dezimaltrennzeichen (Punkt)
-var meter = "m";                                           // Abkürzung für Meter
-var meterPerSecond = "m/s";                                // Abkürzung für Meter pro Sekunde
-var meterPerSecond2 = "m/s&sup2;";                         // Abkürzung für Meter pro Sekunde hoch 2
-var kilogram = "kg";                                       // Abkürzung für Kilogramm
-var degree = "&deg;";                                      // Abkürzung für Grad
+var meter = "m";                                           // AbkÃ¼rzung fÃ¼r Meter
+var meterPerSecond = "m/s";                                // AbkÃ¼rzung fÃ¼r Meter pro Sekunde
+var meterPerSecond2 = "m/s&sup2;";                         // AbkÃ¼rzung fÃ¼r Meter pro Sekunde hoch 2
+var kilogram = "kg";                                       // AbkÃ¼rzung fÃ¼r Kilogramm
+var degree = "&deg;";                                      // AbkÃ¼rzung fÃ¼r Grad
 
 // Texte in Unicode-Schreibweise:
 
-var text14 = "(in m)";                                     // Einheitenangabe für Koordinatenachsen 
+var text14 = "(in m)";                                     // Einheitenangabe fÃ¼r Koordinatenachsen 
 var text15 = "Position:";
 var text16 = "(horizontal)";
 var text17 = "(vertical)";
@@ -48,16 +48,16 @@ var text28 = "Total energy:";
 
 // Symbole und Einheiten:
 
-var symbolX = "x";                                         // Symbol für waagrechte Koordinate
-var symbolY = "y";                                         // Symbol für senkrechte Koordinate
-var symbolVelocity = "v";                                  // Symbol für Geschwindigkeit
-var meterUnicode = "m";                                    // Abkürzung für Meter
-var secondUnicode = "s";                                   // Abkürzung für Sekunde
-var meterPerSecondUnicode = "m/s";                         // Abkürzung für Meter pro Sekunde
-var meterPerSecond2Unicode = "m/s\u00b2";                  // Abkürzung für Meter pro Sekunde hoch 2
-var newtonUnicode = "N";                                   // Abkürzung für Newton
-var jouleUnicode = "J";                                    // Abkürzung für Joule
-var degreeUnicode = "\u00b0";                              // Abkürzung für Grad
+var symbolX = "x";                                         // Symbol fÃ¼r waagrechte Koordinate
+var symbolY = "y";                                         // Symbol fÃ¼r senkrechte Koordinate
+var symbolVelocity = "v";                                  // Symbol fÃ¼r Geschwindigkeit
+var meterUnicode = "m";                                    // AbkÃ¼rzung fÃ¼r Meter
+var secondUnicode = "s";                                   // AbkÃ¼rzung fÃ¼r Sekunde
+var meterPerSecondUnicode = "m/s";                         // AbkÃ¼rzung fÃ¼r Meter pro Sekunde
+var meterPerSecond2Unicode = "m/s\u00b2";                  // AbkÃ¼rzung fÃ¼r Meter pro Sekunde hoch 2
+var newtonUnicode = "N";                                   // AbkÃ¼rzung fÃ¼r Newton
+var jouleUnicode = "J";                                    // AbkÃ¼rzung fÃ¼r Joule
+var degreeUnicode = "\u00b0";                              // AbkÃ¼rzung fÃ¼r Grad
 
 
 
