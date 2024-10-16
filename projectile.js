@@ -1,136 +1,136 @@
 // Schiefer Wurf
-// Java-Applet (13.09.2000) umgewandelt
-// 25.12.2014 - 11.08.2023
+// Java-Applet (16.10.2024) umgewandelt
+// 25.11.2024 - 30.12.2024
 
 // ****************************************************************************
-// * Autor: Walter Fendt (www.walter-fendt.de)                                *
-// * Dieses Programm darf - auch in veränderter Form - für nicht-kommerzielle *
+// * Autor: Kaan Dasdemir                                 *
+// * Dieses Programm darf - auch in verÃ¤nderter Form - fÃ¼r nicht-kommerzielle *
 // * Zwecke verwendet und weitergegeben werden, solange dieser Hinweis nicht  *
 // * entfernt wird.                                                           *
 // **************************************************************************** 
 
-// Sprachabhängige Texte sind einer eigenen Datei (zum Beispiel projectile_de.js) abgespeichert.
+// SprachabhÃ¤ngige Texte sind einer eigenen Datei (zum Beispiel projectile_de.js) abgespeichert.
 
 // Farben:
 
 var colorBackground = "#ffff00";                           // Hintergrundfarbe
-var colorGround = "#ffc040";                               // Farbe für Untergrund
-var colorPosition = "#ff0000";                             // Farbe für Position
-var colorVelocity = "#ff00ff";                             // Farbe für Geschwindigkeit
-var colorAcceleration = "#0000ff";                         // Farbe für Beschleunigung
-var colorForce = "#008020";                                // Farbe für Kraft
-var colorAngle = "#00ffff";                                // Farbe für Winkelmarkierung
-colorClock1 = "#808080";                                   // Farbe für Gehäuse der Digitaluhr
-colorClock2 = "#000000";                                   // Farbe für Anzeige der Digitaluhr
-colorClock3 = "#ff0000";                                   // Farbe für Ziffern der Digitaluhr
+var colorGround = "##0000ff";                              // Farbe fÃ¼r Untergrund
+var colorPosition = "#ff0000";                             // Farbe fÃ¼r Position
+var colorVelocity = "#ff00ff";                             // Farbe fÃ¼r Geschwindigkeit
+var colorAcceleration = "#0000ff";                         // Farbe fÃ¼r Beschleunigung
+var colorForce = "#008020";                                // Farbe fÃ¼r Kraft
+var colorAngle = "#00ffff";                                // Farbe fÃ¼r Winkelmarkierung
+colorClock1 = "#000000";                                   // Farbe fÃ¼r GehÃ¤use der Digitaluhr
+colorClock2 = "#FFFFFF";                                   // Farbe fÃ¼r Anzeige der Digitaluhr
+colorClock3 = "#00FF00";                                   // Farbe fÃ¼r Ziffern der Digitaluhr
 
 // Sonstige Konstanten:
 
-var PI2 = 2*Math.PI;                                       // Abkürzung für 2 pi
-var DEG = Math.PI/180;                                     // 1 Grad (Bogenmaß)
+var PI2 = 2*Math.PI;                                       // AbkÃ¼rzung fÃ¼r 2 pi
+var DEG = Math.PI/180;                                     // 1 Grad (BogenmaÃŸ)
 var FONT1 = "normal normal bold 12px sans-serif";          // Normaler Zeichensatz
-var FONT2 = "normal normal bold 16px monospace";           // Zeichensatz für Digitaluhr
+var FONT2 = "normal normal bold 16px monospace";           // Zeichensatz fÃ¼r Digitaluhr
 var xU = 50, yU = 270;                                     // Position des Ursprungs (Pixel)
 
 // Attribute:
 
-var canvas, ctx;                                           // Zeichenfläche, Grafikkontext
-var width, height;                                         // Abmessungen der Zeichenfläche (Pixel)
-var bu1, bu2;                                              // Schaltknöpfe (Zurück, Start)
+var canvas, ctx;                                           // ZeichenflÃ¤che, Grafikkontext
+var width, height;                                         // Abmessungen der ZeichenflÃ¤che (Pixel)
+var bu1, bu2;                                              // SchaltknÃ¶pfe (ZurÃ¼ck, Start)
 var cbSlow;                                                // Optionsfeld (Zeitlupe)
 var ipH, ipV, ipW, ipM, ipG;                               // Eingabefelder
 var rbY, rbV, rbA, rbF, rbE;                               // Radiobuttons
-var on;                                                    // Flag für Bewegung
-var slow;                                                  // Flag für Zeitlupe
+var on;                                                    // Flag fÃ¼r Bewegung
+var slow;                                                  // Flag fÃ¼r Zeitlupe
 var t0;                                                    // Anfangszeitpunkt
 var t;                                                     // Aktuelle Zeit (s)
-var timer;                                                 // Timer für Animation
+var timer;                                                 // Timer fÃ¼r Animation
 
-var g;                                                     // Fallbeschleunigung (m/s²)
-var h0;                                                    // Ausgangshöhe (m)
+var g;                                                     // Fallbeschleunigung (m/sÂ²)
+var h0;                                                    // AusgangshÃ¶he (m)
 var v0, v0x, v0y;                                          // Anfangsgeschwindigkeit (Betrag und Komponenten, m/s)
-var alpha0;                                                // Wurfwinkel (Bogenmaß)
+var alpha0;                                                // Wurfwinkel (BogenmaÃŸ)
 var m;                                                     // Masse (kg)
 var x, y;                                                  // Koordinaten (m)
 var x0, y0;                                                // Koordinaten (Pixel)
 var pix;                                                   // Umrechnungsfaktor (Pixel pro Meter)
 var tW;                                                    // Flugdauer (s)
 var w;                                                     // Wurfweite (m)
-var hMax;                                                  // Maximale Höhe (m)
+var hMax;                                                  // Maximale HÃ¶he (m)
 var vyMax;                                                 // Maximum von vy (Betrag, m/s)
 var e;                                                     // Gesamtenergie (J)
-var nrSize;                                                // Dargestellte physikalische Größe
+var nrSize;                                                // Dargestellte physikalische GrÃ¶ÃŸe
 var pos1, pos2;                                            // Textpositionen (je nach Sprache)   
 
-// Element der Schaltfläche (aus HTML-Datei):
+// Element der SchaltflÃ¤che (aus HTML-Datei):
 // id ..... ID im HTML-Befehl
 // text ... Text (optional)
 
 function getElement (id, text) {
   var e = document.getElementById(id);                     // Element
   if (text) e.innerHTML = text;                            // Text festlegen, falls definiert
-  return e;                                                // Rückgabewert
+  return e;                                                // RÃ¼ckgabewert
   } 
   
 // Start:
 
 function start () {
-  canvas = getElement("cv");                               // Zeichenfläche
+  canvas = getElement("cv");                               // ZeichenflÃ¤che
   width = canvas.width; height = canvas.height;            // Abmessungen (Pixel)
   ctx = canvas.getContext("2d");                           // Grafikkontext
   bu1 = getElement("bu1",text01);                          // Resetknopf
   bu2 = getElement("bu2",text02[0]);                       // Startknopf
-  bu2.state = 0;                                           // Zunächst Zustand vor dem Start
+  bu2.state = 0;                                           // ZunÃ¤chst Zustand vor dem Start
   cbSlow = getElement("cbSlow");                           // Optionsfeld Zeitlupe
-  cbSlow.checked = false;                                  // Zeitlupe zunächst abgeschaltet
-  getElement("lbSlow",text03);                             // Erklärender Text (Zeitlupe)
-  getElement("ipHa",text04);                               // Erklärender Text (Ausgangshöhe)
-  ipH = getElement("ipHb");                                // Eingabefeld (Ausgangshöhe)
-  getElement("ipHc",meter);                                // Einheit (Ausgangshöhe)
-  getElement("ipVa",text05);                               // Erkärender Text (Anfangsgeschwindigkeit)
+  cbSlow.checked = false;                                  // Zeitlupe zunÃ¤chst abgeschaltet
+  getElement("lbSlow",text03);                             // ErklÃ¤render Text (Zeitlupe)
+  getElement("ipHa",text04);                               // ErklÃ¤render Text (AusgangshÃ¶he)
+  ipH = getElement("ipHb");                                // Eingabefeld (AusgangshÃ¶he)
+  getElement("ipHc",meter);                                // Einheit (AusgangshÃ¶he)
+  getElement("ipVa",text05);                               // ErkÃ¤render Text (Anfangsgeschwindigkeit)
   ipV = getElement("ipVb");                                // Eingabefeld (Anfangsgeschwindigkeit)
   getElement("ipVc",meterPerSecond);                       // Einheit (Anfangsgeschwindigkeit)
-  getElement("ipWa",text06);                               // Erklärender Text (Winkel)
+  getElement("ipWa",text06);                               // ErklÃ¤render Text (Winkel)
   ipW = getElement("ipWb");                                // Eingabefeld (Winkel)
   getElement("ipWc",degree);                               // Einheit (Winkel)
-  getElement("ipMa",text07);                               // Erklärender Text (Masse)
+  getElement("ipMa",text07);                               // ErklÃ¤render Text (Masse)
   ipM = getElement("ipMb");                                // Eingabefeld (Masse)
   getElement("ipMc",kilogram);                             // Einheit (Masse)
-  getElement("ipGa",text08);                               // Erklärender Text (Fallbeschleunigung)
+  getElement("ipGa",text08);                               // ErklÃ¤render Text (Fallbeschleunigung)
   ipG = getElement("ipGb");                                // Eingabefeld (Fallbeschleunigung)
   getElement("ipGc",meterPerSecond2);                      // Einheit (Fallbeschleunigung)
   rbY = getElement("rbY");                                 // Radiobutton (Position)
-  getElement("lbY",text09);                                // Erklärender Text (Position)
+  getElement("lbY",text09);                                // ErklÃ¤render Text (Position)
   rbV = getElement("rbV");                                 // Radiobutton (Geschwindigkeit)
-  getElement("lbV",text10);                                // Erklärender Text (Geschwindigkeit)
+  getElement("lbV",text10);                                // ErklÃ¤render Text (Geschwindigkeit)
   rbA = getElement("rbA");                                 // Radiobutton (Beschleunigung)
-  getElement("lbA",text11);                                // Erklärender Text (Beschleunigung)
+  getElement("lbA",text11);                                // ErklÃ¤render Text (Beschleunigung)
   rbF = getElement("rbF");                                 // Radiobutton (Kraft)
-  getElement("lbF",text12);                                // Erklärender Text (Kraft)
+  getElement("lbF",text12);                                // ErklÃ¤render Text (Kraft)
   rbE = getElement("rbE");                                 // Radiobutton (Energie)
-  getElement("lbE",text13);                                // Erklärender Text (Energie)
-  rbY.checked = true; nrSize = 1;                          // Zunächst Position ausgewählt
-  getElement("author",author);                             // Autor (eventuell Übersetzer)
+  getElement("lbE",text13);                                // ErklÃ¤render Text (Energie)
+  rbY.checked = true; nrSize = 1;                          // ZunÃ¤chst Position ausgewÃ¤hlt
+  getElement("author",author);                             // Autor (eventuell Ãœbersetzer)
     
-  on = slow = false;                                       // Animation und Zeitlupe zunächst abgeschaltet
+  on = slow = false;                                       // Animation und Zeitlupe zunÃ¤chst abgeschaltet
   h0 = 5; v0 = 5; alpha0 = 45*DEG; m = 1; g = 9.81;        // Anfangswerte der Eingabefelder
   updateInput();                                           // Eingabefelder aktualisieren 
-  enableInput(true);                                       // Eingabe zunächst möglich
+  enableInput(true);                                       // Eingabe zunÃ¤chst mÃ¶glich
   t = 0;                                                   // Zeitvariable (s)  
   calculation();                                           // Berechnungen (Seiteneffekt!)
   calcPos12();                                             // Berechnung von pos1 und pos2
   paint();                                                 // Zeichnen 
-  focus(ipH);                                              // Fokus für erstes Eingabefeld
+  focus(ipH);                                              // Fokus fÃ¼r erstes Eingabefeld
      
-  bu1.onclick = reactionReset;                             // Reaktion auf Schaltknopf (Zurück)
+  bu1.onclick = reactionReset;                             // Reaktion auf Schaltknopf (ZurÃ¼ck)
   bu2.onclick = reactionStart;                             // Reaktion auf Schaltknopf (Start/Pause/Weiter)
   cbSlow.onclick = reactionSlow;                           // Reaktion auf Optionsfeld (Zeitlupe)
-  ipH.onkeydown = reactionEnter;                           // Reaktion auf Enter-Taste (Eingabefeld Ausgangshöhe)
+  ipH.onkeydown = reactionEnter;                           // Reaktion auf Enter-Taste (Eingabefeld AusgangshÃ¶he)
   ipV.onkeydown = reactionEnter;                           // Reaktion auf Enter-Taste (Eingabefeld Geschwindigkeit)
   ipW.onkeydown = reactionEnter;                           // Reaktion auf Enter-Taste (Eingabefeld Winkel)
   ipM.onkeydown = reactionEnter;                           // Reaktion auf Enter-Taste (Eingabefeld Masse)
   ipG.onkeydown = reactionEnter;                           // Reaktion auf Enter-Taste (Eingabefeld Fallbeschleunigung)
-  ipH.onblur = reaction;                                   // Reaktion auf Verlust des Fokus (Eingabefeld Höhe)
+  ipH.onblur = reaction;                                   // Reaktion auf Verlust des Fokus (Eingabefeld HÃ¶he)
   ipV.onblur = reaction;                                   // Reaktion auf Verlust des Fokus (Eingabefeld Geschwindigkeit)
   ipW.onblur = reaction;                                   // Reaktion auf Verlust des Fokus (Eingabefeld Winkel)
   ipM.onblur = reaction;                                   // Reaktion auf Verlust des Fokus (Eingabefeld Masse)
@@ -143,7 +143,7 @@ function start () {
 
   } // Ende der Methode start
   
-// Zustandsfestlegung für Schaltknopf Start/Pause/Weiter:
+// Zustandsfestlegung fÃ¼r Schaltknopf Start/Pause/Weiter:
   
 function setButton2State (st) {
   bu2.state = st;                                          // Zustand speichern
@@ -156,11 +156,11 @@ function switchButton2 () {
   var st = bu2.state;                                      // Momentaner Zustand
   if (st == 0) st = 1;                                     // Falls Ausgangszustand, starten
   else st = 3-st;                                          // Wechsel zwischen Animation und Unterbrechung
-  setButton2State(st);                                     // Neuen Zustand speichern, Text ändern
+  setButton2State(st);                                     // Neuen Zustand speichern, Text Ã¤ndern
   }
   
 // Aktivierung bzw. Deaktivierung der Eingabefelder:
-// p ... Flag für mögliche Eingabe
+// p ... Flag fÃ¼r mÃ¶gliche Eingabe
 
 function enableInput (p) {
   ipH.readOnly = !p;
@@ -176,19 +176,19 @@ function reactionReset () {
   setButton2State(0);                                      // Zustand des Schaltknopfs Start/Pause/Weiter
   enableInput(true);                                       // Eingabefelder aktivieren
   stopAnimation();                                         // Animation stoppen
-  t = 0;                                                   // Zeitvariable zurücksetzen
-  reaction();                                              // Eingegebene Werte übernehmen, rechnen, neu zeichnen
-  focus(ipH);                                              // Fokus für erstes Eingabefeld
+  t = 0;                                                   // Zeitvariable zurÃ¼cksetzen
+  reaction();                                              // Eingegebene Werte Ã¼bernehmen, rechnen, neu zeichnen
+  focus(ipH);                                              // Fokus fÃ¼r erstes Eingabefeld
   }
   
 // Reaktion auf den Schaltknopf Start:
 
 function reactionStart () {
-  switchButton2();                                         // Zustand des Schaltknopfs ändern
+  switchButton2();                                         // Zustand des Schaltknopfs Ã¤ndern
   enableInput(false);                                      // Eingabefelder deaktivieren
   if (bu2.state == 1) startAnimation();                    // Entweder Animation starten bzw. fortsetzen ...
   else stopAnimation();                                    // ... oder stoppen
-  reaction();                                              // Eingegebene Werte übernehmen, rechnen, neu zeichnen
+  reaction();                                              // Eingegebene Werte Ã¼bernehmen, rechnen, neu zeichnen
   }
   
 // Reaktion auf Optionsfeld Zeitlupe:
@@ -198,11 +198,11 @@ function reactionSlow () {
   slow = cbSlow.checked;                                   // Flag setzen
   }
   
-// Hilfsroutine: Eingabe übernehmen, rechnen, neu zeichnen
+// Hilfsroutine: Eingabe Ã¼bernehmen, rechnen, neu zeichnen
 // Seiteneffekt h0, v0, alpha0, m, g, v0x, v0y, tW, w, hMax, vyMax, e, pix
 
 function reaction () {
-  input();                                                 // Eingegebene Werte übernehmen (eventuell korrigiert)
+  input();                                                 // Eingegebene Werte Ã¼bernehmen (eventuell korrigiert)
   calculation();                                           // Berechnungen
   paint();                                                 // Neu zeichnen
   }
@@ -210,17 +210,17 @@ function reaction () {
 // Reaktion auf Tastendruck (nur auf Enter-Taste):
   
 function reactionEnter (e) {
-  var enter = (e.key == "Enter" || e.code == "Enter");     // Flag für Enter-Taste
+  var enter = (e.key == "Enter" || e.code == "Enter");     // Flag fÃ¼r Enter-Taste
   if (!enter) return;                                      // Falls andere Taste, abbrechen
-  reaction();                                              // Daten übernehmen, rechnen, neu zeichnen
+  reaction();                                              // Daten Ã¼bernehmen, rechnen, neu zeichnen
   }
   
-// Fokus für Eingabefeld, Cursor am Ende:
+// Fokus fÃ¼r Eingabefeld, Cursor am Ende:
 // ip ... Eingabefeld
   
 function focus (ip) {
-  ip.focus();                                              // Fokus für Eingabefeld
-  var n = ip.value.length;                                 // Länge der Zeichenkette
+  ip.focus();                                              // Fokus fÃ¼r Eingabefeld
+  var n = ip.value.length;                                 // LÃ¤nge der Zeichenkette
   ip.setSelectionRange(n,n);                               // Cursor setzen
   }
 
@@ -231,8 +231,8 @@ function reactionRadioButton () {
   else if (rbV.checked) nrSize = 2;                        // ... oder Geschwindigkeit ...
   else if (rbA.checked) nrSize = 3;                        // ... oder Beschleunigung ...
   else if (rbF.checked) nrSize = 4;                        // ... oder Kraft ...
-  else nrSize = 5;                                         // ... oder Energie ausgewählt
-  if (!on) paint();                                        // Falls Animation nicht läuft, neu zeichnen
+  else nrSize = 5;                                         // ... oder Energie ausgewÃ¤hlt
+  if (!on) paint();                                        // Falls Animation nicht lÃ¤uft, neu zeichnen
   }
   
 // Animation starten oder fortsetzen:
@@ -259,20 +259,20 @@ function stopAnimation () {
 
 function calcPos12 () {
   ctx.font = FONT1;                                        // Normaler Zeichensatz
-  pos1 = ctx.measureText(text18).width;                    // Länge von "Wurfweite" (Pixel) 
-  pos1 = Math.max(pos1,ctx.measureText(text19).width);     // Länge von "Maximalhöhe", falls größer
-  pos1 = Math.max(pos1,ctx.measureText(text20).width);     // Länge von "Wurfdauer", falls größer
+  pos1 = ctx.measureText(text18).width;                    // LÃ¤nge von "Wurfweite" (Pixel) 
+  pos1 = Math.max(pos1,ctx.measureText(text19).width);     // LÃ¤nge von "MaximalhÃ¶he", falls grÃ¶ÃŸer
+  pos1 = Math.max(pos1,ctx.measureText(text20).width);     // LÃ¤nge von "Wurfdauer", falls grÃ¶ÃŸer
   pos1 += 260;                                             // Textposition
-  pos2 = ctx.measureText(text26).width;                    // Länge von "Kinetische Energie" (Pixel)
-  pos2 = Math.max(pos2,ctx.measureText(text27).width);     // Länge von "Potentielle Energie", falls größer
-  pos2 = Math.max(pos2,ctx.measureText(text28).width);     // Länge von "Gesamtenergie", falls größer
+  pos2 = ctx.measureText(text26).width;                    // LÃ¤nge von "Kinetische Energie" (Pixel)
+  pos2 = Math.max(pos2,ctx.measureText(text27).width);     // LÃ¤nge von "Potentielle Energie", falls grÃ¶ÃŸer
+  pos2 = Math.max(pos2,ctx.measureText(text28).width);     // LÃ¤nge von "Gesamtenergie", falls grÃ¶ÃŸer
   pos2 += 260;                                             // Textpositionen
   }
 
 // Umrechnungsfaktor (Pixel/Einheit):
-// maxReal .... Maximale Streckenlänge (m)
-// maxPixel ... Maximale Streckenlänge (Pixel)
-// maxPixel sollte möglichst durch 100 teilbar sein.
+// maxReal .... Maximale StreckenlÃ¤nge (m)
+// maxPixel ... Maximale StreckenlÃ¤nge (Pixel)
+// maxPixel sollte mÃ¶glichst durch 100 teilbar sein.
   
 function getFactor (maxReal, maxPixel) {
   var q = maxPixel/maxReal; 
@@ -285,7 +285,7 @@ function getFactor (maxReal, maxPixel) {
   return f;
   }
   
-// Schrittweite für Markierungen (in m):
+// Schrittweite fÃ¼r Markierungen (in m):
     
 function getStep1 () {
   var limit = 5, step1 = 1;
@@ -295,7 +295,7 @@ function getStep1 () {
     }
   }
   
-// Schrittweite für beschriftete Markierungen (in m):
+// Schrittweite fÃ¼r beschriftete Markierungen (in m):
   
 function getStep2 () {
   var limit = 50, step1 = 1;
@@ -319,10 +319,10 @@ function calculation () {
   tW = (v0y+Math.sqrt(v0y*v0y+2*g*h0))/g;                  // Wurfdauer (s)
   w = v0x*tW;                                              // Wurfweite (m)
   if (v0y > 0) {                                           // Falls Wurf nach oben ...
-    var t = v0y/g;                                         // ... Zeitpunkt für maximale Höhe (s)
-    hMax = h0+v0y*t-g*t*t/2;                               // ... Maximale Höhe (m)
+    var t = v0y/g;                                         // ... Zeitpunkt fÃ¼r maximale HÃ¶he (s)
+    hMax = h0+v0y*t-g*t*t/2;                               // ... Maximale HÃ¶he (m)
     }
-  else hMax = h0;                                          // ... Sonst maximale Höhe gleich Ausgangshöhe (m)
+  else hMax = h0;                                          // ... Sonst maximale HÃ¶he gleich AusgangshÃ¶he (m)
   vyMax = Math.abs(v0y-g*tW);                              // Maximalbetrag der senkrechten Geschwindigkeitskomponente (m/s)
   e = m*v0*v0/2+m*g*h0;                                    // Gesamtenergie (J)
   pix = getFactor(Math.max(w,hMax),300);                   // Umrechnungsfaktor (Pixel pro m)
@@ -332,7 +332,7 @@ function calculation () {
 // Umwandlung einer Zahl in eine Zeichenkette:
 // n ..... Gegebene Zahl
 // d ..... Zahl der Stellen
-// fix ... Flag für Nachkommastellen (im Gegensatz zu gültigen Ziffern)
+// fix ... Flag fÃ¼r Nachkommastellen (im Gegensatz zu gÃ¼ltigen Ziffern)
 
 function ToString (n, d, fix) {
   var s = (fix ? n.toFixed(d) : n.toPrecision(d));         // Zeichenkette mit Dezimalpunkt
@@ -342,20 +342,20 @@ function ToString (n, d, fix) {
 // Eingabe einer Zahl
 // ef .... Eingabefeld
 // d ..... Zahl der Stellen
-// fix ... Flag für Nachkommastellen (im Gegensatz zu gültigen Ziffern)
+// fix ... Flag fÃ¼r Nachkommastellen (im Gegensatz zu gÃ¼ltigen Ziffern)
 // min ... Minimum des erlaubten Bereichs
 // max ... Maximum des erlaubten Bereichs
-// Rückgabewert: Zahl oder NaN
+// RÃ¼ckgabewert: Zahl oder NaN
   
 function inputNumber (ef, d, fix, min, max) {
   var s = ef.value;                                        // Zeichenkette im Eingabefeld
   s = s.replace(",",".");                                  // Eventuell Komma in Punkt umwandeln
-  var n = Number(s);                                       // Umwandlung in Zahl, falls möglich
+  var n = Number(s);                                       // Umwandlung in Zahl, falls mÃ¶glich
   if (isNaN(n)) n = 0;                                     // Sinnlose Eingaben als 0 interpretieren 
   if (n < min) n = min;                                    // Falls Zahl zu klein, korrigieren
-  if (n > max) n = max;                                    // Falls Zahl zu groß, korrigieren
+  if (n > max) n = max;                                    // Falls Zahl zu groÃŸ, korrigieren
   ef.value = ToString(n,d,fix);                            // Eingabefeld eventuell korrigieren
-  return n;                                                // Rückgabewert
+  return n;                                                // RÃ¼ckgabewert
   }
    
 // Gesamte Eingabe:
@@ -363,26 +363,26 @@ function inputNumber (ef, d, fix, min, max) {
 
 function input () {
   var ae = document.activeElement;                         // Aktives Element
-  h0 = inputNumber(ipH,3,true,0,100);                      // Ausgangshöhe (m)
+  h0 = inputNumber(ipH,3,true,0,100);                      // AusgangshÃ¶he (m)
   v0 = inputNumber(ipV,3,true,0,100);                      // Anfangsgeschwindigkeit (m/s) 
-  alpha0 = inputNumber(ipW,3,true,-90,90)*DEG;             // Winkel (Eingabe in Grad, Umrechnung in Bogenmaß)
+  alpha0 = inputNumber(ipW,3,true,-90,90)*DEG;             // Winkel (Eingabe in Grad, Umrechnung in BogenmaÃŸ)
   m = inputNumber(ipM,3,true,0.1,10);                      // Masse (kg)
-  g = inputNumber(ipG,3,true,1,100);                       // Fallbeschleunigung (m/s²)
-  if (ae == ipH) focus(ipV);                               // Fokus für nächstes Eingabefeld
-  if (ae == ipV) focus(ipW);                               // Fokus für nächstes Eingabefeld    
-  if (ae == ipW) focus(ipM);                               // Fokus für nächstes Eingabefeld
-  if (ae == ipM) focus(ipG);                               // Fokus für nächstes Eingabefeld
+  g = inputNumber(ipG,3,true,1,100);                       // Fallbeschleunigung (m/sÂ²)
+  if (ae == ipH) focus(ipV);                               // Fokus fÃ¼r nÃ¤chstes Eingabefeld
+  if (ae == ipV) focus(ipW);                               // Fokus fÃ¼r nÃ¤chstes Eingabefeld    
+  if (ae == ipW) focus(ipM);                               // Fokus fÃ¼r nÃ¤chstes Eingabefeld
+  if (ae == ipM) focus(ipG);                               // Fokus fÃ¼r nÃ¤chstes Eingabefeld
   if (ae == ipG) ipG.blur();                               // Fokus abgeben
   }
   
 // Aktualisierung der Eingabefelder:
 
 function updateInput () {
-  ipH.value = ToString(h0,3,true);                         // Eingabefeld für Ausgangshöhe
-  ipV.value = ToString(v0,3,true);                         // Eingabefeld für Anfangsgeschwindigkeit
-  ipW.value = ToString(alpha0/DEG,3,true);                 // Eingabefeld für Winkel
-  ipM.value = ToString(m,3,true);                          // Eingabefeld für Masse
-  ipG.value = ToString(g,3,true);                          // Eingabefeld für Fallbeschleunigung
+  ipH.value = ToString(h0,3,true);                         // Eingabefeld fÃ¼r AusgangshÃ¶he
+  ipV.value = ToString(v0,3,true);                         // Eingabefeld fÃ¼r Anfangsgeschwindigkeit
+  ipW.value = ToString(alpha0/DEG,3,true);                 // Eingabefeld fÃ¼r Winkel
+  ipM.value = ToString(m,3,true);                          // Eingabefeld fÃ¼r Masse
+  ipG.value = ToString(g,3,true);                          // Eingabefeld fÃ¼r Fallbeschleunigung
   }
    
 //-------------------------------------------------------------------------------------------------
@@ -412,26 +412,26 @@ function line (x1, y1, x2, y2, c, w) {
 // Rechteck mit schwarzem Rand:
 // (x,y) ... Koordinaten der Ecke links oben (Pixel)
 // w ....... Breite (Pixel)
-// h ....... Höhe (Pixel)
-// c ....... Füllfarbe (optional)
+// h ....... HÃ¶he (Pixel)
+// c ....... FÃ¼llfarbe (optional)
 
 function rectangle (x, y, w, h, c) {
-  if (c) ctx.fillStyle = c;                                // Füllfarbe
+  if (c) ctx.fillStyle = c;                                // FÃ¼llfarbe
   newPath();                                               // Neuer Pfad
-  ctx.fillRect(x,y,w,h);                                   // Rechteck ausfüllen
+  ctx.fillRect(x,y,w,h);                                   // Rechteck ausfÃ¼llen
   ctx.strokeRect(x,y,w,h);                                 // Rand zeichnen
   }
 
 // Kreisscheibe mit schwarzem Rand:
 // (x,y) ... Mittelpunktskoordinaten (Pixel)
 // r ....... Radius (Pixel)
-// c ....... Füllfarbe (optional)
+// c ....... FÃ¼llfarbe (optional)
 
 function circle (x, y, r, c) {
-  if (c) ctx.fillStyle = c;                                // Füllfarbe
+  if (c) ctx.fillStyle = c;                                // FÃ¼llfarbe
   newPath();                                               // Neuer Pfad
   ctx.arc(x,y,r,0,PI2,true);                               // Kreis vorbereiten
-  if (c) ctx.fill();                                       // Kreis ausfüllen, falls gewünscht
+  if (c) ctx.fill();                                       // Kreis ausfÃ¼llen, falls gewÃ¼nscht
   ctx.stroke();                                            // Rand zeichnen
   }
   
@@ -444,11 +444,11 @@ function circle (x, y, r, c) {
 function arrow (x1, y1, x2, y2, w) {
   if (!w) w = 1;                                           // Falls Liniendicke nicht definiert, Defaultwert                          
   var dx = x2-x1, dy = y2-y1;                              // Vektorkoordinaten
-  var length = Math.sqrt(dx*dx+dy*dy);                     // Länge
-  if (length == 0) return;                                 // Abbruch, falls Länge 0
+  var length = Math.sqrt(dx*dx+dy*dy);                     // LÃ¤nge
+  if (length == 0) return;                                 // Abbruch, falls LÃ¤nge 0
   dx /= length; dy /= length;                              // Einheitsvektor
-  var s = 2.5*w+7.5;                                       // Länge der Pfeilspitze 
-  var xSp = x2-s*dx, ySp = y2-s*dy;                        // Hilfspunkt für Pfeilspitze         
+  var s = 2.5*w+7.5;                                       // LÃ¤nge der Pfeilspitze 
+  var xSp = x2-s*dx, ySp = y2-s*dy;                        // Hilfspunkt fÃ¼r Pfeilspitze         
   var h = 0.5*w+3.5;                                       // Halbe Breite der Pfeilspitze
   var xSp1 = xSp-h*dy, ySp1 = ySp+h*dx;                    // Ecke der Pfeilspitze
   var xSp2 = xSp+h*dy, ySp2 = ySp-h*dx;                    // Ecke der Pfeilspitze
@@ -460,13 +460,13 @@ function arrow (x1, y1, x2, y2, w) {
   else ctx.lineTo(xSp,ySp);                                // ... sonst weiter zur einspringenden Ecke
   ctx.stroke();                                            // Linie zeichnen
   if (length < 5) return;                                  // Falls kurzer Pfeil, keine Spitze
-  ctx.beginPath();                                         // Neuer Pfad für Pfeilspitze
-  ctx.fillStyle = ctx.strokeStyle;                         // Füllfarbe wie Linienfarbe
+  ctx.beginPath();                                         // Neuer Pfad fÃ¼r Pfeilspitze
+  ctx.fillStyle = ctx.strokeStyle;                         // FÃ¼llfarbe wie Linienfarbe
   ctx.moveTo(xSp,ySp);                                     // Anfangspunkt (einspringende Ecke)
   ctx.lineTo(xSp1,ySp1);                                   // Weiter zum Punkt auf einer Seite
   ctx.lineTo(x2,y2);                                       // Weiter zur Spitze
   ctx.lineTo(xSp2,ySp2);                                   // Weiter zum Punkt auf der anderen Seite
-  ctx.closePath();                                         // Zurück zum Anfangspunkt
+  ctx.closePath();                                         // ZurÃ¼ck zum Anfangspunkt
   ctx.fill();                                              // Pfeilspitze zeichnen 
   }
     
@@ -474,10 +474,10 @@ function arrow (x1, y1, x2, y2, w) {
 
 function clock () {
   var x = 140, y = 30;                                     // Position des Mittelpunkts (Pixel)
-  rectangle(x-60,y-15,120,30,colorClock1);                 // Rechteck für Gehäuse
-  rectangle(x-50,y-10,100,20,colorClock2);                 // Rechteck für Anzeige
-  ctx.font = FONT2;                                        // Zeichensatz für Ziffern
-  ctx.fillStyle = colorClock3;                             // Farbe für Ziffern                
+  rectangle(x-60,y-15,120,30,colorClock1);                 // Rechteck fÃ¼r GehÃ¤use
+  rectangle(x-50,y-10,100,20,colorClock2);                 // Rechteck fÃ¼r Anzeige
+  ctx.font = FONT2;                                        // Zeichensatz fÃ¼r Ziffern
+  ctx.fillStyle = colorClock3;                             // Farbe fÃ¼r Ziffern                
   var s = ToString(t,3,true) + " "+secondUnicode;          // Zeichenkette
   ctx.textAlign = "center";                                // Textausrichtung zentriert
   ctx.fillText(s,x,y+5);                                   // Zeit ausgeben
@@ -491,7 +491,7 @@ function ball () {
   x = v0x*t; y = h0+v0y*t-g*t*t/2;                         // Momentane Position (m)
   if (y < 0) y = 0;                                        // Falls Wurf beendet, y-Koordinate 0
   x0 = xU+pix*x; y0 = yU-pix*y;                            // Momentane Position (Pixel)
-  circle(x0,y0,3.5,"#000000");                             // Ausgefüllter Kreis
+  circle(x0,y0,3.5,"#000000");                             // AusgefÃ¼llter Kreis
   }
   
 // Koordinatensystem:
@@ -500,20 +500,20 @@ function axes () {
   newPath();                                               // Neuer Grafikpfad (Standardwerte)
   arrow(xU-10,yU,xU+355,yU);                               // Waagrechte Achse
   arrow(xU,yU+10,xU,yU-255);                               // Senkrechte Achse
-  var step1 = getStep1();                                  // Schrittweite für Ticks 
-  var step2 = getStep2();                                  // Schrittweite für beschriftete Ticks
+  var step1 = getStep1();                                  // Schrittweite fÃ¼r Ticks 
+  var step2 = getStep2();                                  // Schrittweite fÃ¼r beschriftete Ticks
   ctx.textAlign = "center";                                // Textausrichtung zentriert
   ctx.fillStyle = "#000000";                               // Textfarbe schwarz
-  for (var i=1; i<=330/pix; i++) {                         // Für alle Ticks der waagrechten Achse ... 
+  for (var i=1; i<=330/pix; i++) {                         // FÃ¼r alle Ticks der waagrechten Achse ... 
     var x = xU+i*pix;                                      // x-Koordinate (Pixel)
-    var d = (i%step2==0 ? 5 : 2);                          // Halbe Strichlänge
+    var d = (i%step2==0 ? 5 : 2);                          // Halbe StrichlÃ¤nge
     if (i%step1 == 0) line(x,yU-d,x,yU+d);                 // Tick zeichnen
     if (i%step2 == 0) ctx.fillText(""+i,x,yU+18);          // Tick beschriften    
     }
-  ctx.textAlign = "right";                                 // Textausrichtung rechtsbündig
-  for (var i=1; i<=220/pix; i++) {                         // Für alle Ticks der senkrechten Achse ... 
+  ctx.textAlign = "right";                                 // Textausrichtung rechtsbÃ¼ndig
+  for (var i=1; i<=220/pix; i++) {                         // FÃ¼r alle Ticks der senkrechten Achse ... 
     var y = yU-i*pix;                                      // y-Koordinate (Pixel)
-    var d = (i%step2==0 ? 5 : 2);                          // Halbe Strichlänge
+    var d = (i%step2==0 ? 5 : 2);                          // Halbe StrichlÃ¤nge
     if (i%step1 == 0) line(xU-d,y,xU+d,y);                 // Tick zeichnen
     if (i%step2 == 0) ctx.fillText(""+i,xU-7,y+4);         // Tick beschriften
     }
@@ -524,11 +524,11 @@ function axes () {
   ctx.fillText(text14,xU-20,yU-230);                       // Einheitsangabe (in m)
   }
       
-// Wurfparabel (Näherung durch Polygonzug):
+// Wurfparabel (NÃ¤herung durch Polygonzug):
 
 function orbit () {
   newPath();                                               // Neuer Grafikpfad (Standardwerte)
-  ctx.strokeStyle = colorPosition;                         // Farbe für Position
+  ctx.strokeStyle = colorPosition;                         // Farbe fÃ¼r Position
   if (v0x < 1e-10) {                                       // Falls senkrechter Wurf ...
     line(xU,yU,xU,yU-hMax*pix); return;                    // ... Senkrechte Linie
     }
@@ -537,17 +537,17 @@ function orbit () {
   ctx.moveTo(xx,yy);                                       // Anfangspunkt des Polygonzugs
   var t = 0;                                               // Zeitvariable (s)
   while (t < tW) {                                         // Solange Wurf nicht zu Ende ...
-    xx++;                                                  // Waagrechte Koordinate erhöhen (Pixel)
+    xx++;                                                  // Waagrechte Koordinate erhÃ¶hen (Pixel)
     var x = (xx-xU)/pix;                                   // x-Koordinate des neuen Punkts (m)
-    t = x/v0x;                                             // Zeit für neuen Punkt (s)
+    t = x/v0x;                                             // Zeit fÃ¼r neuen Punkt (s)
     var y = h0+t*(v0y-gH*t);                               // y-Koordinate des neuen Punkts (m)
     yy = yU-y*pix;                                         // Senkrechte Koordinate (Pixel)
-    ctx.lineTo(xx,yy);                                     // Strecke zum Polygonzug hinzufügen
+    ctx.lineTo(xx,yy);                                     // Strecke zum Polygonzug hinzufÃ¼gen
     }
   ctx.stroke();                                            // Polygonzug zeichnen
   }
   
-// Grafiktext (Wert einer Größe):
+// Grafiktext (Wert einer GrÃ¶ÃŸe):
 // beg ..... Text vor der Zahl
 // val ..... Zahl
 // end ..... Text nach der Zahl (z. B. Einheit)
@@ -562,7 +562,7 @@ function writeValue (beg, val, end, x, y) {
 
 function position () {
   newPath();                                               // Neuer Grafikpfad (Standardwerte)
-  ctx.fillStyle = colorPosition;                           // Farbe für Position
+  ctx.fillStyle = colorPosition;                           // Farbe fÃ¼r Position
   var x1 = 220, x2 = 240, x3 = 320;                        // Positionsangaben
   ctx.fillText(text15,x1,25);                              // Text (Position)
   writeValue(symbolX+" = ",x," "+meterUnicode,x2,40);      // Wert der x-Koordinate (m)
@@ -571,8 +571,8 @@ function position () {
   ctx.fillText(text17,x3,55);                              // Text (senkrecht)
   ctx.fillText(text18,x1,80);                              // Text (Wurfweite)
   writeValue("",w," "+meterUnicode,pos1,80);               // Wert der Wurfweite (m)                      
-  ctx.fillText(text19,x1,95);                              // Text (Maximale Höhe)
-  writeValue("",hMax," "+meterUnicode,pos1,95);            // Wert der maximalen Höhe (m)
+  ctx.fillText(text19,x1,95);                              // Text (Maximale HÃ¶he)
+  writeValue("",hMax," "+meterUnicode,pos1,95);            // Wert der maximalen HÃ¶he (m)
   ctx.fillText(text20,x1,120);                             // Text (Dauer)
   writeValue("",tW," "+secondUnicode,pos1,120);            // Wert der Wurfdauer (s)
   line(x0,yU-5,x0,yU+5,colorPosition);                     // Markierung auf der x-Achse
@@ -581,34 +581,34 @@ function position () {
       
 // Winkelmarkierung:
 // x, y ... Scheitel
-// a ...... Winkel gegenüber der Waagrechten (Bogenmaß, kann auch negativ sein) 
+// a ...... Winkel gegenÃ¼ber der Waagrechten (BogenmaÃŸ, kann auch negativ sein) 
 
 function angle (x, y, a) {
   var r = 20;                                              // Radius (Pixel)
   newPath();                                               // Neuer Grafikpfad (Standardwerte)
-  ctx.fillStyle = colorAngle;                              // Füllfarbe
+  ctx.fillStyle = colorAngle;                              // FÃ¼llfarbe
   ctx.moveTo(x,y);                                         // Scheitel als Anfangspunkt
   ctx.lineTo(x+r,y);                                       // Linie nach rechts
   ctx.arc(x,y,r,0,-a,a>0);                                 // Kreisbogen
-  ctx.closePath();                                         // Zurück zum Scheitel
-  ctx.fill(); ctx.stroke();                                // Kreissektor ausfüllen, Rand zeichnen
+  ctx.closePath();                                         // ZurÃ¼ck zum Scheitel
+  ctx.fill(); ctx.stroke();                                // Kreissektor ausfÃ¼llen, Rand zeichnen
   }
     
 // Darstellung der Geschwindigkeit: Vektorpfeil, Zerlegung in Komponenten, Zahlenwerte
 
 function velocity () {
   var vy = v0y-g*t;                                        // Senkrechte Geschwindigkeitskomponente (m/s)
-  var alpha = Math.atan(vy/v0x);                           // Neigungswinkel (Bogenmaß)
+  var alpha = Math.atan(vy/v0x);                           // Neigungswinkel (BogenmaÃŸ)
   angle(x0,y0,alpha);                                      // Winkelmarkierung
   orbit();                                                 // Wurfbahn
-  var l = vyMax*10;                                        // Maximale Pfeillänge, falls 10 Pixel für 1 m/s
+  var l = vyMax*10;                                        // Maximale PfeillÃ¤nge, falls 10 Pixel fÃ¼r 1 m/s
   var f = (l>120 ? l/120 : 1);                             // Faktor (mindestens gleich 1)
   var dxPix = v0x*10/f;                                    // Waagrechte Komponente (Pixel)
   var dyPix = vy*10/f;                                     // Senkrechte Komponente (Pixel) 
-  ctx.strokeStyle = colorVelocity;                         // Farbe für Geschwindigkeit
-  arrow(x0,y0,x0+dxPix,y0-dyPix,3);                        // Dicker Pfeil für Geschwindigkeit
-  arrow(x0,y0,x0+dxPix,y0);                                // Dünner Pfeil für waagrechte Komponente
-  arrow(x0,y0,x0,y0-dyPix);                                // Dünner Pfeil für senkrechte Komponente
+  ctx.strokeStyle = colorVelocity;                         // Farbe fÃ¼r Geschwindigkeit
+  arrow(x0,y0,x0+dxPix,y0-dyPix,3);                        // Dicker Pfeil fÃ¼r Geschwindigkeit
+  arrow(x0,y0,x0+dxPix,y0);                                // DÃ¼nner Pfeil fÃ¼r waagrechte Komponente
+  arrow(x0,y0,x0,y0-dyPix);                                // DÃ¼nner Pfeil fÃ¼r senkrechte Komponente
   ctx.fillText(text21,220,25);                             // Text (Geschwindigkeitskomponenten)
   var w1 = ctx.measureText(symbolVelocity).width;          // Breite des Geschwindigkeitssymbols (v, Pixel)                     
   var w2 = 2*w1+ctx.measureText("  ").width;               // Abstand (Pixel)
@@ -624,7 +624,7 @@ function velocity () {
   ctx.fillText(text22,220,80);                             // Text (Geschwindigkeitsbetrag)
   var v = Math.sqrt(v0x*v0x+vy*vy);                        // Betrag der Geschwindigkeit (m/s)
   writeValue("",v,mps,240,95);                             // Zahlenwert (Geschwindigkeitsbetrag in m/s)
-  ctx.fillText(text23,220,120);                            // Text (Winkel gegenüber der Waagrechten)
+  ctx.fillText(text23,220,120);                            // Text (Winkel gegenÃ¼ber der Waagrechten)
   writeValue("",alpha/DEG,degreeUnicode,350,120);          // Zahlenwert (Winkel in Grad)
   ctx.strokeStyle = "#000000";                             // Farbe schwarz
   line(x0+dxPix,y0,x0+dxPix,y0-dyPix);                     // Senkrechte Hilfslinie
@@ -634,19 +634,19 @@ function velocity () {
 // Darstellung der Beschleunigung: Vektorpfeil, Zahlenwert
 
 function acceleration () {
-  var len = (g<30 ? g*4 : 120);                            // Pfeillänge (Pixel)
-  ctx.strokeStyle = colorAcceleration;                     // Farbe für Beschleunigung
-  arrow(x0,y0,x0,y0+len,3);                                // Pfeil für Beschleunigung
+  var len = (g<30 ? g*4 : 120);                            // PfeillÃ¤nge (Pixel)
+  ctx.strokeStyle = colorAcceleration;                     // Farbe fÃ¼r Beschleunigung
+  arrow(x0,y0,x0,y0+len,3);                                // Pfeil fÃ¼r Beschleunigung
   ctx.fillText(text24,220,25);                             // Text (Beschleunigung)
-  writeValue("",g," "+meterPerSecond2Unicode,330,25);      // Zahlenwert (Beschleunigung in m/s²)
+  writeValue("",g," "+meterPerSecond2Unicode,330,25);      // Zahlenwert (Beschleunigung in m/sÂ²)
   }
   
 // Darstellung der Kraft: Vektorpfeil, Zahlenwert
 
 function force () {
-  var len = (g<30/m ? g*4*m : 120);                        // Pfeillänge (Pixel)
-  ctx.strokeStyle = colorForce;                            // Farbe für Kraft
-  arrow(x0,y0,x0,y0+len,3);                                // Pfeil für Kraft
+  var len = (g<30/m ? g*4*m : 120);                        // PfeillÃ¤nge (Pixel)
+  ctx.strokeStyle = colorForce;                            // Farbe fÃ¼r Kraft
+  arrow(x0,y0,x0,y0+len,3);                                // Pfeil fÃ¼r Kraft
   ctx.fillText(text25,220,25);                             // Text (Kraft)
   writeValue("",m*g," "+newtonUnicode,330,25);             // Zahlenwert (Kraft in N)
   }
@@ -656,10 +656,10 @@ function force () {
 function energy () {
   var ePot = m*g*y;                                        // Potentielle Energie (J)
   var j = " "+jouleUnicode;                                // Einheit J mit Leerzeichen davor
-  ctx.fillStyle = colorVelocity;                           // Farbe für Geschwindigkeit
+  ctx.fillStyle = colorVelocity;                           // Farbe fÃ¼r Geschwindigkeit
   ctx.fillText(text26,220,25);                             // Text (kinetische Energie)
   writeValue("",e-ePot,j,pos2,25);                         // Zahlenwert (kinetische Energie in J)
-  ctx.fillStyle = colorPosition;                           // Farbe für Position
+  ctx.fillStyle = colorPosition;                           // Farbe fÃ¼r Position
   ctx.fillText(text27,220,40);                             // Text (potentielle Energie)
   writeValue("",ePot,j,pos2,40);                           // Zahlenwert (potentielle Energie in J)
   ctx.fillStyle = "#000000";                               // Schriftfarbe schwarz
@@ -671,10 +671,10 @@ function energy () {
   
 function paint () {
   ctx.fillStyle = colorBackground;                         // Hintergrundfarbe
-  ctx.fillRect(0,0,width,height);                          // Hintergrund ausfüllen
+  ctx.fillRect(0,0,width,height);                          // Hintergrund ausfÃ¼llen
   if (on) {                                                // Falls Animation angeschaltet ...
     var t1 = new Date();                                   // ... Aktuelle Zeit
-    var dt = (t1-t0)/1000;                                 // ... Länge des Zeitintervalls (s)
+    var dt = (t1-t0)/1000;                                 // ... LÃ¤nge des Zeitintervalls (s)
     if (slow) dt /= 10;                                    // ... Falls Zeitlupe, Zeitintervall durch 10 dividieren
     t += dt;                                               // ... Zeitvariable aktualisieren
     t0 = t1;                                               // ... Neuer Anfangszeitpunkt
@@ -687,8 +687,8 @@ function paint () {
   axes();                                                  // Koordinatensystem
   clock();                                                 // Digitaluhr
   if (nrSize != 2) orbit();                                // Wurfbahn (Winkelmarkierung vorher zeichnen!)
-  ctx.textAlign = "left";                                  // Ab hier Textausrichtung immer linksbündig
-  switch (nrSize) {                                        // Je nach dargestellter Größe ...
+  ctx.textAlign = "left";                                  // Ab hier Textausrichtung immer linksbÃ¼ndig
+  switch (nrSize) {                                        // Je nach dargestellter GrÃ¶ÃŸe ...
     case 1: position(); break;                             // Position
     case 2: velocity(); break;                             // Geschwindigkeit
     case 3: acceleration(); break;                         // Beschleunigung
