@@ -13,16 +13,16 @@
 
 // Farben:
 
-var colorBackground = "#ffff00";                           // Hintergrundfarbe
-var colorGround = "#0000ff";                               // Farbe für Untergrund
-var colorPosition = "#0000FF";                             // Farbe für Position
+var colorBackground = "#ADD8E6";                           // Hintergrundfarbe
+var colorGround = "#ADD8E6";                               // Farbe für Untergrund
+var colorPosition = "#0000ff";                             // Farbe für Position
 var colorVelocity = "#ff00ff";                             // Farbe für Geschwindigkeit
 var colorAcceleration = "#0000ff";                         // Farbe für Beschleunigung
 var colorForce = "#008020";                                // Farbe für Kraft
 var colorAngle = "#00ffff";                                // Farbe für Winkelmarkierung
 colorClock1 = "#000000";                                   // Farbe für Gehäuse der Digitaluhr
-colorClock2 = "#FFFFFF";                                   // Farbe für Anzeige der Digitaluhr
-colorClock3 = "#00FF00";                                   // Farbe für Ziffern der Digitaluhr
+colorClock2 = "#ffffff";                                   // Farbe für Anzeige der Digitaluhr
+colorClock3 = "#00ff00";                                   // Farbe für Ziffern der Digitaluhr
 
 // Sonstige Konstanten:
 
