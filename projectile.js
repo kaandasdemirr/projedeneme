@@ -363,10 +363,10 @@ function inputNumber (ef, d, fix, min, max) {
 
 function input () {
   var ae = document.activeElement;                         // Aktives Element
-  h0 = inputNumber(ipH,3,true,0,100);                      // Ausgangshöhe (m)
-  v0 = inputNumber(ipV,3,true,0,100);                      // Anfangsgeschwindigkeit (m/s) 
+  h0 = inputNumber(ipH,3,true,0,9999);                      // Ausgangshöhe (m)
+  v0 = inputNumber(ipV,3,true,0,9999);                      // Anfangsgeschwindigkeit (m/s) 
   alpha0 = inputNumber(ipW,3,true,-90,90)*DEG;             // Winkel (Eingabe in Grad, Umrechnung in Bogenmaß)
-  m = inputNumber(ipM,3,true,0.1,10);                      // Masse (kg)
+  m = inputNumber(ipM,3,true,0.1,9999);                      // Masse (kg)
   g = inputNumber(ipG,3,true,1,100);                       // Fallbeschleunigung (m/s²)
   if (ae == ipH) focus(ipV);                               // Fokus für nächstes Eingabefeld
   if (ae == ipV) focus(ipW);                               // Fokus für nächstes Eingabefeld    
